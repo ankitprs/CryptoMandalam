@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -140,6 +141,7 @@ fun PhantomLoginButton(onGoogleLoginClicked: () -> Unit) {
     ) {
         Spacer(modifier = Modifier.height(60.dp))
         Text(
+            fontFamily = FontFamily.Cursive,
             text = "Welcome to our crowdfunding app for DAO! Join us in fight against Climate Change, Hunger and many more from around the world.",
             style = MaterialTheme.typography.h5,
             modifier = Modifier.align(Alignment.CenterHorizontally),

@@ -13,11 +13,6 @@
         android:theme="@style/Theme.CryptoMandalam"
         tools:targetApi="31">
         <activity
-            android:name=".presentation.SettingActivity"
-            android:exported="false"
-            android:label="@string/title_activity_setting"
-            android:theme="@style/Theme.CryptoMandalam" />
-        <activity
             android:name=".presentation.AuthenticationActivity"
             android:exported="true"
             android:label="@string/app_name"
@@ -34,7 +29,11 @@
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.CryptoMandalam">
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
 
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
         </activity>
     </application>
 

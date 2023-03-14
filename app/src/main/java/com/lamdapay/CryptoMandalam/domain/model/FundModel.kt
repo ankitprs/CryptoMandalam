@@ -1,15 +1,20 @@
 package com.lamdapay.CryptoMandalam.domain.model
 
+import com.google.errorprone.annotations.Keep
+import kotlinx.serialization.Serializable
+
+@Keep
+@Serializable
 data class FundModel(
-    val name: String = "",
-    val description: String= "",
-    val imageUrl: String= "",
-    val pledgedAmount: Double,
-    val fundingGoal: Double,
-    val progress: Float,
-    val daoName: String= "",
-    val crowdfundingTiming: String= "",
-    val fundCategory: String= "",
-    val imageUrlDao: String = "",
-    val contractId: String = "0xjklgsf"
+    var name: String = "",
+    var description: String= "",
+    var imageUrl: String= "",
+    var pledgedAmount: Double,
+    var fundingGoal: Double,
+    var progress: Double,
+    var daoName: String= "",
+    var crowdfundingTiming: String= "",
+    var fundCategory: String= "",
+    var imageUrlDao: String = "",
+    var contractId: String = ""
 )

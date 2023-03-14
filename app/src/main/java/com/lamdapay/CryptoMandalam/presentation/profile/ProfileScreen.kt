@@ -1,59 +1,61 @@
 package com.lamdapay.CryptoMandalam.presentation.profile
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import com.lamdapay.CryptoMandalam.domain.model.DaoModel
+import com.lamdapay.CryptoMandalam.presentation.ui.theme.bottom_color
 
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ProfileScreen(
     userPublicKey: String,
+    context: Context,
     viewModel: ProfileViewModel = hiltViewModel()
 ) {
-
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
         Text(
-            text = "My Profile",
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Medium,
-            modifier = Modifier.padding(vertical = 16.dp, horizontal = 8.dp)
+            text = "My Profile...",
+            fontSize = 32.sp,
+            fontFamily = FontFamily.Cursive,
+            fontWeight = FontWeight.Black,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(15.dp)
         )
-
         Text(
-            text = userPublicKey,
-            fontSize = 24.sp,
+            text = "  Wallet Address -> $userPublicKey ",
+            fontSize = 16.sp,
             fontWeight = FontWeight.Black,
             modifier = Modifier.padding(vertical = 16.dp, horizontal = 8.dp)
         )
         // Clickable list of options
-        ListItem(
-            text = { Text("Create new DAO") },
-            modifier = Modifier.clickable { /* Handle DAO click */ }
-        )
-
-        ListItem(
-            text = { Text("Create new fund proposal") },
-            modifier = Modifier.clickable { /* Handle proposal click */ }
-        )
-
-        ListItem(
-            text = { Text("Contact me") },
-            modifier = Modifier.clickable { /* Handle contact click */ }
-        )
+        BeautifulListItem(text = "Create new DAO") {
+            context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://forms.gle/yjw9u6MDTCFPWnZu6")))
+        }
+        BeautifulListItem(text = "Create new Fund proposal") {
+            context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://forms.gle/UMbW9mxFhiuK3JpH7")))
+        }
+        BeautifulListItem(text = "Contact me") {
+            context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://forms.gle/xTfALXjxT5QhXroj7")))
+        }
     }
 
 }
@@ -110,5 +112,22 @@ fun DaoCardView(dao: DaoModel, modifier: Modifier = Modifier) {
                 style = MaterialTheme.typography.caption
             )
         }
+    }
+}
+
+@Composable
+fun BeautifulListItem(text: String, onClick: () -> Unit) {
+    Button(
+        modifier = Modifier.padding(10.dp).fillMaxWidth(),
+        colors = ButtonDefaults.buttonColors(backgroundColor = bottom_color),
+        shape = RoundedCornerShape(30.dp),
+        onClick = onClick
+    ) {
+        Text(
+            modifier = Modifier.padding(15.dp),
+            text = text,
+            color = Color.DarkGray,
+            fontSize = 14.sp
+        )
     }
 }

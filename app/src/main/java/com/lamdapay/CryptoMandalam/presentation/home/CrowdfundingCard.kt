@@ -148,6 +148,7 @@ fun CrowdfundingCard(
                         .fillMaxWidth()
                         .height(15.dp)
                         .padding(vertical = 5.dp),
+                    color = ButtonColorOn
                 )
                 Spacer(
                     modifier = Modifier

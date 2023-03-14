@@ -1,8 +1,10 @@
 package com.lamdapay.CryptoMandalam.presentation
 
 import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.ActivityResultLauncher
@@ -27,6 +29,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import com.lamdapay.CryptoMandalam.domain.model.FundModel
 import com.lamdapay.CryptoMandalam.presentation.home.DonationScreen
 import com.lamdapay.CryptoMandalam.presentation.home.HomeScreen
 import com.lamdapay.CryptoMandalam.presentation.profile.ProfileScreen
@@ -54,7 +59,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val publicKey =  viewModel.uiState.value.publicKey.toString()
+        val publicKey = viewModel.uiState.value.publicKey.toString()
 
         setContent {
             CryptoMandalamTheme {
@@ -71,26 +76,17 @@ class MainActivity : ComponentActivity() {
                         NavigationGraph(
                             navController = navController,
                             innerPadding,
-                            publicKey = publicKey
-                        ){ amount, onSuccess ->
-                            viewModel.signAndSendTransactions(intentSender,1)
-                        }
-                    }
-                }
-            }
-        }
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.CREATED) {
-                viewModel.uiState.collect { uiState ->
-                    withContext(Dispatchers.Main) {
-                        if (!uiState.hasAuthToken) {
-                            viewModel.authorize(intentSender)
+                            publicKey = publicKey,
+                            this
+                        ) { amount, onSuccess ->
+                            viewModel.signAndSendTransactions(intentSender, 1)
                         }
                     }
                 }
             }
         }
     }
+
     private val intentSender = object : MainViewModel.StartActivityForResultSender {
         private var callback: (() -> Unit)? = null
 
@@ -164,6 +160,7 @@ fun NavigationGraph(
     navController: NavHostController,
     innerPadding: PaddingValues,
     publicKey: String,
+    context: Context,
     onDonateClicked: (donationAmount: Double, onSuccess: () -> Unit) -> Unit
 ) {
     NavHost(
@@ -175,7 +172,7 @@ fun NavigationGraph(
             HomeScreen(navController)
         }
         composable(Screen.ProfileScreen.route) {
-            ProfileScreen(publicKey)
+            ProfileScreen(publicKey, context)
         }
         composable(Screen.ProposalsScreen.route) {
             ProposalsScreen()

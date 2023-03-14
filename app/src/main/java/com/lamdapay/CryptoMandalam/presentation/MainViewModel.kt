@@ -60,41 +60,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
         showMessage(if (result == true) R.string.msg_request_succeeded else R.string.msg_request_failed)
     }
-
-    fun reauthorize(sender: StartActivityForResultSender) = viewModelScope.launch {
-        val result = localAssociateAndExecute(sender, _uiState.value.walletUriBase) { client ->
-            doReauthorize(client)
-        }
-        showMessage(if (result == true) R.string.msg_request_succeeded else R.string.msg_request_failed)
-    }
-
-    fun deauthorize(sender: StartActivityForResultSender) = viewModelScope.launch {
-        val result = localAssociateAndExecute(sender, _uiState.value.walletUriBase) { client ->
-            doDeauthorize(client)
-        }
-
-        showMessage(if (result == true) R.string.msg_request_succeeded else R.string.msg_request_failed)
-    }
-
-    fun getCapabilities(sender: StartActivityForResultSender) = viewModelScope.launch {
-        val result = localAssociateAndExecute(sender, _uiState.value.walletUriBase) { client ->
-            doGetCapabilities(client)
-        }
-
-        showMessage(if (result != null) R.string.msg_request_succeeded else R.string.msg_request_failed)
-    }
-
-    fun requestAirdrop() = viewModelScope.launch {
-        try {
-            RequestAirdropUseCase(CLUSTER_RPC_URI, _uiState.value.publicKey!!)
-            Log.d(TAG, "Airdrop request sent")
-            showMessage(R.string.msg_airdrop_request_sent)
-        } catch (e: RequestAirdropUseCase.AirdropFailedException) {
-            Log.e(TAG, "Airdrop request failed", e)
-            showMessage(R.string.msg_airdrop_failed)
-        }
-    }
-
     fun setTransactionVersion(txnVersion: MemoTransactionVersion) {
         _uiState.update { it.copy(txnVersion = txnVersion) }
     }
@@ -179,105 +144,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-//    fun authorizeAndSignMessageAndSignTransaction(sender: StartActivityForResultSender) = viewModelScope.launch {
-//        val latestBlockhash = viewModelScope.async(Dispatchers.IO, CoroutineStart.LAZY) {
-//            GetLatestBlockhashUseCase(CLUSTER_RPC_URI)
-//        }
-//
-//        lateinit var message: ByteArray
-//        var signedMessage: SignMessagesResult.SignedMessage? = null
-//        var transactionSignature: ByteArray? = null
-//        localAssociateAndExecute(sender) { client ->
-//            val authorized = doAuthorize(client)
-//            if (!authorized) {
-//                return@localAssociateAndExecute null
-//            }
-//
-//            message =
-//                "Sign this message to prove you own account ${Base58EncodeUseCase(uiState.value.publicKey!!)}".encodeToByteArray()
-//            signedMessage = doSignMessages(client, arrayOf(message), arrayOf(uiState.value.publicKey!!))?.get(0)
-//
-//            Log.d(TAG, "Simulating a short delay while we do something with the message the user just signed...")
-//            latestBlockhash.start() // Kick off fetching the blockhash before we delay, to reduce latency
-//            delay(1500) // Simulate a 1.5-second wait while we do something with the signed message
-//
-//            val (blockhash, slot) = try {
-//                latestBlockhash.await()
-//            } catch (e: GetLatestBlockhashUseCase.GetLatestBlockhashFailedException) {
-//                Log.e(TAG, "Failed retrieving latest blockhash", e)
-//                return@localAssociateAndExecute null
-//            }
-//
-//            val transaction =
-//                arrayOf(transactionUseCase.create(uiState.value.publicKey!!, blockhash))
-//            transactionSignature = doSignAndSendTransactions(client, transaction, slot)?.get(0)
-//        }
-//
-//        if (signedMessage == null || transactionSignature == null) {
-//            showMessage(R.string.msg_request_failed)
-//        } else {
-//            val messageSignatureVerified = try {
-//                OffChainMessageSigningUseCase.verify(
-//                    signedMessage!!.message,
-//                    signedMessage!!.signatures[0],
-//                    uiState.value.publicKey!!,
-//                    message
-//                )
-//                true
-//            } catch (e: IllegalArgumentException) {
-//                Log.e(TAG, "Failed verifying signature on message", e)
-//                false
-//            }
-//
-//            Log.d(
-//                TAG,
-//                "Transaction signature(base58)= ${Base58EncodeUseCase(transactionSignature!!)}"
-//            )
-//
-//            showMessage(
-//                if (messageSignatureVerified) R.string.msg_request_succeeded
-//                else R.string.msg_signature_verification_failed
-//            )
-//        }
-//    }
-//
-//    fun signMessages(sender: StartActivityForResultSender, numMessages: Int) = viewModelScope.launch {
-//        val messages = Array(numMessages) { i ->
-//            when (i) {
-//                1 -> ByteArray(1232) { j -> ('a' + (j % 10)).code.toByte() }
-//                2 -> ByteArray(32768) { j -> j.toByte() }
-//                else -> "A simple test message $i".encodeToByteArray()
-//            }
-//        }
-//        val signedMessages = localAssociateAndExecute(sender, _uiState.value.walletUriBase) { client ->
-//            val authorized = doReauthorize(client)
-//            if (!authorized) {
-//                return@localAssociateAndExecute null
-//            }
-//            doSignMessages(client, messages, arrayOf(_uiState.value.publicKey!!))
-//        }
-//
-//        if (signedMessages != null) {
-//            try {
-//                for (sm in signedMessages.zip(messages)) {
-//                    Log.d(TAG, "Verifying signature of $sm")
-//                    OffChainMessageSigningUseCase.verify(
-//                        sm.first.message,
-//                        sm.first.signatures[0],
-//                        _uiState.value.publicKey!!,
-//                        sm.second
-//                    )
-//                }
-//                showMessage(R.string.msg_request_succeeded)
-//            } catch (e: IllegalArgumentException) {
-//                Log.e(TAG, "Failed verifying signature on message", e)
-//                showMessage(R.string.msg_request_failed)
-//            }
-//        } else {
-//            showMessage(R.string.msg_request_failed)
-//        }
-//    }
-
     fun signAndSendTransactions(sender: StartActivityForResultSender, numTransactions: Int) = viewModelScope.launch {
         val latestBlockhash = viewModelScope.async(Dispatchers.IO) {
             GetLatestBlockhashUseCase(CLUSTER_RPC_URI)
@@ -309,13 +175,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             it.copy(messages = it.messages.plus(str))
         }
     }
-
-    fun messageShown() {
-        _uiState.update {
-            it.copy(messages = it.messages.drop(1))
-        }
-    }
-
     // NOTE: blocks and waits for completion of remote method call
     private fun doAuthorize(client: MobileWalletAdapterClient): Boolean {
         var authorized = false
@@ -419,63 +278,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         return reauthorized
     }
 
-    // NOTE: blocks and waits for completion of remote method call
-    private fun doDeauthorize(client: MobileWalletAdapterClient): Boolean {
-        var deauthorized = false
-        try {
-            client.deauthorize(_uiState.value.authToken!!).get()
-            Log.d(TAG, "Deauthorized")
-            _uiState.update { it.copy(authToken = null, publicKey = null, walletUriBase = null) }
-            deauthorized = true
-        } catch (e: ExecutionException) {
-            when (val cause = e.cause) {
-                is IOException -> Log.e(TAG, "IO error while sending deauthorize", cause)
-                is TimeoutException ->
-                    Log.e(TAG, "Timed out while waiting for deauthorize result", cause)
-                is JsonRpc20Client.JsonRpc20RemoteException ->
-                    Log.e(TAG, "Remote exception for deauthorize", cause)
-                is JsonRpc20Client.JsonRpc20Exception ->
-                    Log.e(TAG, "JSON-RPC client exception for deauthorize", cause)
-                else -> throw e
-            }
-        } catch (e: CancellationException) {
-            Log.e(TAG, "deauthorize request was cancelled", e)
-        } catch (e: InterruptedException) {
-            Log.e(TAG, "deauthorize request was interrupted", e)
-        }
-
-        return deauthorized
-    }
-
-    // NOTE: blocks and waits for completion of remote method call
-    private fun doGetCapabilities(client: MobileWalletAdapterClient): MobileWalletAdapterClient.GetCapabilitiesResult? {
-        var capabilities: MobileWalletAdapterClient.GetCapabilitiesResult? = null
-
-        try {
-            val result = client.getCapabilities().get()
-            Log.d(TAG, "Capabilities: $result")
-            Log.d(TAG, "Supports legacy transactions: ${TransactionVersion.supportsLegacy(result.supportedTransactionVersions)}")
-            Log.d(TAG, "Supports v0 transactions: ${TransactionVersion.supportsVersion(result.supportedTransactionVersions, 0)}")
-            capabilities = result
-        } catch (e: ExecutionException) {
-            when (val cause = e.cause) {
-                is IOException -> Log.e(TAG, "IO error while sending get_capabilities", cause)
-                is TimeoutException ->
-                    Log.e(TAG, "Timed out while waiting for get_capabilities result", cause)
-                is JsonRpc20Client.JsonRpc20RemoteException ->
-                    Log.e(TAG, "Remote exception for get_capabilities", cause)
-                is JsonRpc20Client.JsonRpc20Exception ->
-                    Log.e(TAG, "JSON-RPC client exception for get_capabilities", cause)
-                else -> throw e
-            }
-        } catch (e: CancellationException) {
-            Log.e(TAG, "get_capabilities request was cancelled", e)
-        } catch (e: InterruptedException) {
-            Log.e(TAG, "get_capabilities request was interrupted", e)
-        }
-
-        return capabilities
-    }
 
     // NOTE: blocks and waits for completion of remote method call
     private fun doSignTransactions(
@@ -513,44 +315,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
         return signedTransactions
     }
-
-//    // NOTE: blocks and waits for completion of remote method call
-//    private fun doSignMessages(
-//        client: MobileWalletAdapterClient,
-//        messages: Array<ByteArray>,
-//        addresses: Array<ByteArray>
-//    ): Array<SignMessagesResult.SignedMessage>? {
-//        var signedMessages: Array<SignMessagesResult.SignedMessage>? = null
-//        try {
-//            val result = client.signMessagesDetached(messages, addresses).get()
-//            Log.d(TAG, "Signed message(s): $result")
-//            signedMessages = result.messages
-//        } catch (e: ExecutionException) {
-//            when (val cause = e.cause) {
-//                is IOException -> Log.e(TAG, "IO error while sending sign_messages", cause)
-//                is TimeoutException ->
-//                    Log.e(TAG, "Timed out while waiting for sign_messages result", cause)
-//                is MobileWalletAdapterClient.InvalidPayloadsException ->
-//                    Log.e(TAG, "Message payloads invalid", cause)
-//                is JsonRpc20Client.JsonRpc20RemoteException ->
-//                    when (cause.code) {
-//                        ProtocolContract.ERROR_AUTHORIZATION_FAILED -> Log.e(TAG, "Authorization invalid, authorization or reauthorization required", cause)
-//                        ProtocolContract.ERROR_NOT_SIGNED -> Log.e(TAG, "User did not authorize signing", cause)
-//                        ProtocolContract.ERROR_TOO_MANY_PAYLOADS -> Log.e(TAG, "Too many payloads to sign", cause)
-//                        else -> Log.e(TAG, "Remote exception for sign_messages", cause)
-//                    }
-//                is JsonRpc20Client.JsonRpc20Exception ->
-//                    Log.e(TAG, "JSON-RPC client exception for sign_messages", cause)
-//                else -> throw e
-//            }
-//        } catch (e: CancellationException) {
-//            Log.e(TAG, "sign_messages request was cancelled", e)
-//        } catch (e: InterruptedException) {
-//            Log.e(TAG, "sign_messages request was interrupted", e)
-//        }
-//
-//        return signedMessages
-//    }
 
     // NOTE: blocks and waits for completion of remote method call
     private fun doSignAndSendTransactions(

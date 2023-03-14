@@ -41,7 +41,7 @@ fun DonationScreen(
             OutlinedTextField(
                 value = donationAmount,
                 onValueChange = { donationAmount = it },
-                label = { Text("Donation Amount") },
+                label = { Text("Donation Amount in SOL") },
                 keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                 modifier = Modifier
                     .fillMaxWidth()
