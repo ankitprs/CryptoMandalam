@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">Crypto Mandalam</string>
+    <string name="title_activity_authentication">AuthenticationActivity</string>
+    <string name="title_activity_setting">SettingActivity</string>
+
+    <string name="msg_request_succeeded">Wallet request successful</string>
+    <string name="msg_request_failed">Wallet request failed; check logcat for details</string>
+    <string name="msg_airdrop_request_sent">Airdrop request sent; check block explorer for result</string>
+    <string name="msg_airdrop_failed">Airdrop request failed; check logcat for details</string>
+    <string name="msg_signature_verification_failed">One or more signatures incorrect; check logcat for details</string>
+    <string name="msg_no_wallet_found">Please install a wallet app which supports Mobile Wallet Adapter</string>
+
+    <string name="label_get_capabilities">Get capabilities</string>
+    <string name="label_authorize">Authorize</string>
+    <string name="label_reauthorize">Reauthorize</string>
+    <string name="label_deauthorize">Deauthorize</string>
+    <string name="label_request_airdrop">Request airdrop</string>
+    <string name="label_sign_txn_x1">Sign txn x1</string>
+    <string name="label_sign_txn_x3">x3</string>
+    <string name="label_sign_txn_x20">x20</string>
+    <string name="label_authorize_sign_txn">Authorize + Txn</string>
+    <string name="label_authorize_sign_msg_txn">Authorize + Msg + Send Txn</string>
+    <string name="label_sign_msg_x1">Sign msg x1</string>
+    <string name="label_sign_msg_x3">x3</string>
+    <string name="label_sign_msg_x20">x20</string>
+    <string name="label_txn_version">Transaction Version:</string>
+    <string name="string_txn_version_legacy">Legacy</string>
+    <string name="string_txn_version_v0">V0</string>
+    <string name="label_sign_and_send_txn_x1">Sign and send txn x1</string>
+    <string name="label_sign_and_send_txn_x3">x3</string>
+    <string name="label_sign_and_send_txn_x20">x20</string>
+    <string name="label_has_auth_token">Has auth token?</string>
+    <string name="label_account_name">Account name:</string>
+    <string name="string_no_account_name">&lt;none&gt;</string>
+    <string name="label_wallet_uri_prefix">Wallet URI prefix:</string>
+    <string name="string_no_wallet_uri_prefix">&lt;none&gt;</string>
+</resources>
