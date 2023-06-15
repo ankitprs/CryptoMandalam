@@ -42,13 +42,13 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class AuthenticationActivity : ComponentActivity() {
 
-    @Inject
-    lateinit var viewModel: MainViewModel
+//    @Inject
+//    lateinit var viewModel: MainViewModel
 
-    private val activityResultLauncher: ActivityResultLauncher<Intent> =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            intentSender.onActivityComplete()
-        }
+//    private val activityResultLauncher: ActivityResultLauncher<Intent> =
+//        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+//            intentSender.onActivityComplete()
+//        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,7 +73,7 @@ class AuthenticationActivity : ComponentActivity() {
                         )
 
                         PhantomLoginButton{
-                            viewModel.authorize(intentSender)
+//                            viewModel.authorize(intentSender)
                         }
                     }
                 }
@@ -81,54 +81,54 @@ class AuthenticationActivity : ComponentActivity() {
         }
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.CREATED) {
-                viewModel.uiState.collect { uiState ->
-                    withContext(Dispatchers.Main) {
-                        if (uiState.hasAuthToken) {
-                            startActivity(Intent(this@AuthenticationActivity, MainActivity::class.java))
-                            finish()
-                        }
-                    }
-                }
+//                viewModel.uiState.collect { uiState ->
+//                    withContext(Dispatchers.Main) {
+//                        if (uiState.hasAuthToken) {
+//                            startActivity(Intent(this@AuthenticationActivity, MainActivity::class.java))
+//                            finish()
+//                        }
+//                    }
+//                }
             }
         }
     }
 
     override fun onResume() {
         super.onResume()
-        viewModel.checkIsWalletEndpointAvailable()
+//        viewModel.checkIsWalletEndpointAvailable()
     }
 
-    private val intentSender = object : MainViewModel.StartActivityForResultSender {
-        private var callback: (() -> Unit)? = null
-
-        override suspend fun startActivityForResult(
-            intent: Intent,
-            onActivityCompleteCallback: () -> Unit
-        ) {
-            // A previous Intent may still be pending resolution (via the onActivityComplete method).
-            // Wait for the Activity lifecycle to reach the RESUMED state, which guarantees that any
-            // previous Activity results will have been received and their callback cleared. Blocking
-            // here will lead to either (a) the Activity eventually reaching the RESUMED state, or
-            // (b) the Activity terminating, destroying it's lifecycle-linked scope and cancelling this
-            // Job.
-            lifecycle.whenResumed { // NOTE: runs in Dispatchers.MAIN context
-                check(callback == null) { "Received an activity start request while another is pending" }
-                callback = onActivityCompleteCallback
-
-                try {
-                    activityResultLauncher.launch(intent)
-                } catch (e: ActivityNotFoundException) {
-                    callback = null
-                    throw e
-                }
-            }
-        }
-
-        fun onActivityComplete() {
-            callback?.let { it() }
-            callback = null
-        }
-    }
+//    private val intentSender = object : MainViewModel.StartActivityForResultSender {
+//        private var callback: (() -> Unit)? = null
+//
+//        override suspend fun startActivityForResult(
+//            intent: Intent,
+//            onActivityCompleteCallback: () -> Unit
+//        ) {
+//            // A previous Intent may still be pending resolution (via the onActivityComplete method).
+//            // Wait for the Activity lifecycle to reach the RESUMED state, which guarantees that any
+//            // previous Activity results will have been received and their callback cleared. Blocking
+//            // here will lead to either (a) the Activity eventually reaching the RESUMED state, or
+//            // (b) the Activity terminating, destroying it's lifecycle-linked scope and cancelling this
+//            // Job.
+//            lifecycle.whenResumed { // NOTE: runs in Dispatchers.MAIN context
+//                check(callback == null) { "Received an activity start request while another is pending" }
+//                callback = onActivityCompleteCallback
+//
+//                try {
+//                    activityResultLauncher.launch(intent)
+//                } catch (e: ActivityNotFoundException) {
+//                    callback = null
+//                    throw e
+//                }
+//            }
+//        }
+//
+//        fun onActivityComplete() {
+//            callback?.let { it() }
+//            callback = null
+//        }
+//    }
 
 }
 @Composable

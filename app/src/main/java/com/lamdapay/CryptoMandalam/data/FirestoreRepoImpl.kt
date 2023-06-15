@@ -1,20 +1,9 @@
 package com.lamdapay.CryptoMandalam.data
 
 
-import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.firestore.ktx.toObject
-import com.google.firebase.ktx.Firebase
 import com.lamdapay.CryptoMandalam.domain.model.*
 import com.lamdapay.CryptoMandalam.domain.repository.FirestoreRepo
-import com.solana.mobilewalletadapter.clientlib.ActivityResultSender
-import com.solana.mobilewalletadapter.clientlib.MobileWalletAdapter
-import com.solana.mobilewalletadapter.walletlib.protocol.MobileWalletAdapterServer
-import com.solana.mobilewalletadapter.walletlib.scenario.LocalWebSocketServerScenario
-import com.solana.mobilewalletadapter.walletlib.scenario.Scenario
-import com.solana.mobilewalletadapter.walletlib.scenario.SignAndSendTransactionsRequest
-import okhttp3.internal.wait
 
 class FirestoreRepoImpl : FirestoreRepo {
 
@@ -25,7 +14,7 @@ class FirestoreRepoImpl : FirestoreRepo {
     }
 
     override suspend fun donateFund(crowdFundAddress: String, amount: Double) {
-        val wallet = MobileWalletAdapter()
+//        val wallet = MobileWalletAdapter()
 //        val scenario : Scenario = Scenario.Callbacks
 //        scenario.start()
 //        scenario.associationPublicKey

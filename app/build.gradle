@@ -89,9 +89,6 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:2.9.0"
     implementation 'com.google.code.gson:gson:2.10.1'
 
-    //solana
-    implementation 'com.solanamobile:mobile-wallet-adapter-clientlib-ktx:1.0.5'
-    implementation 'com.solanamobile:mobile-wallet-adapter-walletlib:1.0.5'
 
     implementation 'org.bouncycastle:bcprov-jdk18on:1.72'
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1")
