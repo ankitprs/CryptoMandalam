@@ -2,6 +2,7 @@ package com.lamdapay.CryptoMandalam.data
 
 
 import android.util.Log
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
@@ -41,7 +42,17 @@ class FirestoreRepoImpl : FirestoreRepo {
         return testData.getListOfProposal()[0]
     }
 
-    override suspend fun sendProposalVote(vote: Vote) {
+    override suspend fun sendProposalVote(proposal: DaoProposal) {
+        val document = FirebaseFirestore.getInstance().collection("daoProposals")
+            .document(proposal.solanaDaoAddressId)
+
+        document.set(this)
+            .addOnSuccessListener {
+                // Successfully saved the dao proposal
+            }
+            .addOnFailureListener {
+                // Failed to save the dao proposal
+            }
     }
 
     override suspend fun getDaoList(userWalletAddress: String): List<DaoModel> {

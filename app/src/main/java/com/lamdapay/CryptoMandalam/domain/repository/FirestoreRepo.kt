@@ -12,7 +12,7 @@ interface FirestoreRepo {
 
     suspend fun getProposalDetail(proposalId: String): Proposal
 
-    suspend fun sendProposalVote(vote: Vote)
+    suspend fun sendProposalVote(proposal: DaoProposal)
 
     suspend fun getDaoList(userWalletAddress: String): List<DaoModel>
 

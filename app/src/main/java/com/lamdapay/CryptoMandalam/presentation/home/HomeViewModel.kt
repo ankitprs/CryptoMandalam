@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val getListOfCrowdFunds: GetListOfCrowdFunds,
+    getListOfCrowdFunds: GetListOfCrowdFunds,
     private val donateFund: DonateFund,
 ) : ViewModel() {
 

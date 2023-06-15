@@ -77,8 +77,8 @@ dependencies {
 
     //firebase
     implementation 'com.google.firebase:firebase-auth-ktx:21.1.0'
-    implementation 'com.google.firebase:firebase-firestore-ktx:24.4.4'
-
+    implementation 'com.google.firebase:firebase-firestore-ktx:24.6.1'
+    implementation 'com.solanamobile:solana-pay-android:1.0.0'
 //    //for google auth
 //    implementation 'com.google.android.gms:play-services-auth:20.4.1'
 

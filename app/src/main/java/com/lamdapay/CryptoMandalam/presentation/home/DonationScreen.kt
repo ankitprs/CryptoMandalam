@@ -22,7 +22,7 @@ import com.lamdapay.CryptoMandalam.presentation.ui.theme.CryptoMandalamTheme
 fun DonationScreen(
     navController: NavHostController,
     nameAddress: String,
-    onDonateClicked: (donationAmount: Double, onSuccess: () -> Unit) -> Unit
+    onDonateClicked: (donationAmount: Int, onSuccess: () -> Unit) -> Unit
 ) {
     var donationAmount by remember { mutableStateOf("") }
     var isLoading by remember { mutableStateOf(false) }
@@ -51,7 +51,7 @@ fun DonationScreen(
             Button(
                 onClick = {
                     isLoading = true
-                    onDonateClicked(donationAmount.toDouble()){
+                    onDonateClicked(donationAmount.toInt()){
                         Toast.makeText(context, "Payment successful!", Toast.LENGTH_SHORT).show()
                         navController.navigateUp()
                         isLoading = false

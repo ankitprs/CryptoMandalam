@@ -2,6 +2,7 @@ package com.solana.mobilewalletadapter.fakedapp.usecase
 
 import android.util.Base64
 import android.util.Log
+import com.lamdapay.CryptoMandalam.solana_usecase.Base58EncodeUseCase
 import org.bouncycastle.crypto.params.Ed25519PublicKeyParameters
 import org.bouncycastle.crypto.signers.Ed25519Signer
 

@@ -38,7 +38,7 @@ class TestData {
             ),
             FundModel(
                 "Education for All",
-                "Education transforms lives and is at the heart of UNESCO’s mission to build peace, eradicate poverty and drive sustainable development. It is a human right for all throughout life. UNESCO provides global and regional leadership in education, strengthens education systems worldwide and responds to contemporary global challenges through education with gender equality as an underlying principle. Its work encompasses quality educational development from pre-school to higher education and beyond.",
+                "Education transforms lives and is at the heart of UNESCO’s mission to build peace, eradicate poverty and drive sustainable development. It is a human right for all throughout life. UNESCO provides global and regional leadership in education, strengthens education systems worldwide and responds to contemporary global challenges through education with gender equality as an underlying principle.",
                 "https://firebasestorage.googleapis.com/v0/b/cryptomandalam.appspot.com/o/WhatsApp%20Image%202023-03-15%20at%2012.43.04%20AM.jpeg?alt=media&token=9efb9c76-6bce-466b-830d-16f9eae67c0a",
                 1045.45,
                 5045.45,

@@ -3,6 +3,7 @@ package com.lamdapay.CryptoMandalam.presentation
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -18,6 +19,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.core.net.toUri
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -38,10 +40,12 @@ import com.lamdapay.CryptoMandalam.presentation.profile.ProfileScreen
 import com.lamdapay.CryptoMandalam.presentation.proposal.ProposalsScreen
 import com.lamdapay.CryptoMandalam.presentation.ui.theme.CryptoMandalamTheme
 import com.lamdapay.CryptoMandalam.presentation.ui.theme.bottom_color
+import com.solana.pay.SolanaPayTransferRequest
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.bouncycastle.asn1.x509.ObjectDigestInfo.publicKey
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -60,6 +64,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         val publicKey = viewModel.uiState.value.publicKey.toString()
+        val recipientAddress = "3AMtw8m3pZnrGLmGqQcJnHSQSaegtZGBMpon74EVZVQ3"
 
         setContent {
             CryptoMandalamTheme {
@@ -79,7 +84,9 @@ class MainActivity : ComponentActivity() {
                             publicKey = publicKey,
                             this
                         ) { amount, onSuccess ->
-                            viewModel.signAndSendTransactions(intentSender, 1)
+
+                            SolanaPayTransferRequest("solana:mvines9iiHiQTysrwkJjGf2gb9Ex9jXJX8ns3qwf2kN?amount=1&label=Michael&message=Thanks%20for%20all%20the%20fish&memo=OrderId12345".toUri())
+//                            viewModel.signAndSendTransactions(intentSender, 1000000)
                         }
                     }
                 }
@@ -161,7 +168,7 @@ fun NavigationGraph(
     innerPadding: PaddingValues,
     publicKey: String,
     context: Context,
-    onDonateClicked: (donationAmount: Double, onSuccess: () -> Unit) -> Unit
+    onDonateClicked: (donationAmount: Int, onSuccess: () -> Unit) -> Unit
 ) {
     NavHost(
         navController,

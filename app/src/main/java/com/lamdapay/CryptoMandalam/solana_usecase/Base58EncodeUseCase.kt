@@ -2,7 +2,7 @@
  * Copyright (c) 2022 Solana Mobile Inc.
  */
 
-package com.solana.mobilewalletadapter.fakedapp.usecase
+package com.lamdapay.CryptoMandalam.solana_usecase
 
 import java.nio.charset.StandardCharsets
 

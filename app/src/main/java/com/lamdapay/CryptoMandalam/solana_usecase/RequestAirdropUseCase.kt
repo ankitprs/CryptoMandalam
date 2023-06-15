@@ -6,6 +6,7 @@ package com.solana.mobilewalletadapter.fakedapp.usecase
 
 import android.net.Uri
 import android.util.Log
+import com.lamdapay.CryptoMandalam.solana_usecase.Base58EncodeUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONArray

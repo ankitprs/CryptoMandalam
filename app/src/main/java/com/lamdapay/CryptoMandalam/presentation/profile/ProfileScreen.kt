@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import com.lamdapay.CryptoMandalam.domain.model.DaoModel
+import com.lamdapay.CryptoMandalam.presentation.proposal.ProposalViewModel
 import com.lamdapay.CryptoMandalam.presentation.ui.theme.bottom_color
 
 
@@ -26,7 +27,7 @@ import com.lamdapay.CryptoMandalam.presentation.ui.theme.bottom_color
 fun ProfileScreen(
     userPublicKey: String,
     context: Context,
-    viewModel: ProfileViewModel = hiltViewModel()
+    viewModel: ProposalViewModel = hiltViewModel()
 ) {
     Column(
         modifier = Modifier.fillMaxSize()
